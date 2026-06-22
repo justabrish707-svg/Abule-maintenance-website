@@ -32,10 +32,10 @@
       --mesh-3: #F3E8FF;
       --mesh-4: #CCFBF1;
       
-      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
-      --shadow-lg: 0 10px 30px -5px rgba(0, 0, 0, 0.05), 0 15px 40px -10px rgba(99, 102, 241, 0.15);
-      --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.03), 0 2px 4px -2px rgba(0, 0, 0, 0.03);
+      --shadow-lg: 0 10px 30px -5px rgba(0, 0, 0, 0.04), 0 15px 40px -10px rgba(99, 102, 241, 0.12);
+      --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.12);
     }
 
     [data-theme="dark"] {
@@ -50,10 +50,10 @@
       --mesh-3: rgba(139, 92, 246, 0.15);
       --mesh-4: rgba(45, 212, 191, 0.15);
 
-      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.4);
-      --shadow-lg: 0 10px 30px -5px rgba(0, 0, 0, 0.4), 0 15px 40px -10px rgba(99, 102, 241, 0.2);
-      --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -2px rgba(0, 0, 0, 0.5);
+      --shadow-lg: 0 10px 30px -5px rgba(0, 0, 0, 0.5), 0 15px 40px -10px rgba(99, 102, 241, 0.15);
+      --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     }
 
     * {
@@ -77,13 +77,13 @@
     ──────────────────────────────────────── */
     h1, h2, h3, h4 {
       font-weight: 800;
-      letter-spacing: -0.035em;
-      line-height: 1.15;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
       color: var(--text-main);
     }
 
     .hero-title {
-      font-size: clamp(3rem, 8vw, 5.5rem);
+      font-size: clamp(3.5rem, 8vw, 6rem);
       margin-bottom: 1.5rem;
       animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       opacity: 0;
@@ -91,9 +91,17 @@
     }
 
     .hero-title span {
-      background: linear-gradient(135deg, var(--primary), var(--accent));
+      background: linear-gradient(135deg, var(--primary), var(--accent), var(--secondary));
+      background-size: 200% auto;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      animation: gradient-text 4s linear infinite;
+    }
+
+    @keyframes gradient-text {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
     .hero-subtitle {
@@ -151,8 +159,8 @@
     }
 
     .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.3);
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 12px 30px -5px rgba(99, 102, 241, 0.35);
       filter: brightness(1.1);
     }
 
@@ -169,7 +177,7 @@
 
     .btn-secondary:hover {
       background: #FFF;
-      transform: translateY(-2px);
+      transform: translateY(-3px) scale(1.02);
       box-shadow: var(--shadow-md);
     }
 
@@ -405,19 +413,38 @@
 
     .service-card {
       background: var(--surface-color);
-      border-radius: 24px;
-      padding: 2.5rem;
+      border-radius: 28px;
+      padding: 3rem 2.5rem;
       box-shadow: var(--shadow-sm);
       border: 1px solid var(--border-color);
       transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       position: relative;
       overflow: hidden;
+      z-index: 1;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 100%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      z-index: -1;
+    }
+
+    [data-theme="dark"] .service-card::before {
+      background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%);
     }
 
     .service-card:hover {
-      transform: translateY(-8px);
+      transform: translateY(-10px);
       box-shadow: var(--shadow-lg);
-      border-color: transparent;
+      border-color: var(--border-color);
+    }
+
+    .service-card:hover::before {
+      opacity: 1;
     }
 
     .service-icon {
@@ -758,12 +785,12 @@
     }
     .testimonial-card {
       background: var(--bg-color);
-      border-radius: 24px;
-      padding: 2rem;
+      border-radius: 28px;
+      padding: 2.5rem;
       border: 1px solid var(--border-color);
       transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .testimonial-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: transparent; }
+    .testimonial-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); border-color: var(--border-color); }
     .stars { color: #F59E0B; font-size: 1.1rem; margin-bottom: 1rem; letter-spacing: 2px; }
     .testimonial-text { font-size: 0.975rem; line-height: 1.75; color: var(--text-muted); margin-bottom: 1.5rem; font-style: italic; }
     .testimonial-author { display: flex; align-items: center; gap: 0.75rem; }
@@ -789,20 +816,21 @@
     }
     .pricing-card {
       background: var(--surface-color);
-      border-radius: 24px;
-      padding: 2.5rem;
+      border-radius: 28px;
+      padding: 3rem 2.5rem;
       border: 1px solid var(--border-color);
       transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       display: flex;
       flex-direction: column;
     }
-    .pricing-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); }
+    .pricing-card:hover { transform: translateY(-10px); box-shadow: var(--shadow-lg); }
     .pricing-card--popular {
       background: var(--text-main);
       border-color: transparent;
       transform: scale(1.04);
+      box-shadow: var(--shadow-lg);
     }
-    .pricing-card--popular:hover { transform: scale(1.04) translateY(-8px); }
+    .pricing-card--popular:hover { transform: scale(1.04) translateY(-10px); }
     .pricing-card--popular .pricing-tag { color: rgba(255,255,255,0.55); }
     .pricing-card--popular .pricing-price { color: #FFF; }
     .pricing-card--popular p { color: rgba(255,255,255,0.72); }
@@ -895,7 +923,7 @@
     .form-group select:focus,
     .form-group textarea:focus {
       border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(99,102,241,0.12);
+      box-shadow: 0 0 0 4px var(--bg-color), 0 0 0 6px var(--primary);
     }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
     .form-group textarea { resize: vertical; min-height: 110px; }
